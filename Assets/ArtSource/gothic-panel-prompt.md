@@ -1,0 +1,5 @@
+# Gothic UI frame
+
+Built-in image_gen output saved as Assets/Resources/Art/gothic_panel.png. Used as nine-slice texture by AliceGothicUI and as CSS border-image for touch buttons.
+
+Prompt: Create one game UI panel texture, square 1024x1024, front-facing flat orthographic gothic pixel art. A usable NINE SLICE frame: outer border 110 pixels wide on all sides, ornate dark antique silver and burgundy carved thorns, small skulls in four corners, delicate branching filigree, blood-red gemstones centered on edges. Interior completely plain opaque very dark burgundy #180e18, no ornament inside central 75 percent, to keep text legible. Straight connecting edges so center and edge strips can stretch independently while corner ornaments remain intact. Outer silhouette rectangular, entire image filled, no transparency or exterior background. Crisp detailed pixel art matching a dark gothic forest game with red-haired heroine. No text, no letters, no icons in the central interior, no gradient shine, no perspective.

@@ -1,0 +1,124 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#160f18"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icon-192.png"><title>Алиса в шизолесье</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#09060a}body{display:grid;place-items:center}canvas{width:100vw;height:calc(var(--vh, 1vh) * 100);display:block;touch-action:none;background:#160f18}html.mobile canvas{position:fixed;inset:0;width:100%;height:100%;height:100dvh;image-rendering:pixelated}#loading{position:fixed;inset:0;display:grid;place-content:end center;padding:0 20px max(6px,env(safe-area-inset-bottom));box-sizing:border-box;background:#160f18 url(splash.png) center/cover no-repeat;color:#ffe2c4;font:20px monospace;text-align:center;text-shadow:2px 2px 3px #000}#mobile-start,#rotate{display:none;position:fixed;inset:0;z-index:30;place-items:center;padding:32px;background:#160f18 url(splash.png) center/cover no-repeat;color:#efd3d4;text-align:center;text-shadow:2px 2px 3px #000}html.mobile:not(.mobile-started) #mobile-start{display:grid}#mobile-start button{padding:18px 30px;border:2px solid #b74e6b;border-radius:4px;background:#28101b;color:#ffe0e5;font:700 20px monospace;box-shadow:0 0 0 4px #12070d,0 0 22px #8d2948}#rotate{z-index:20;background:#160f18;font:22px monospace}progress{accent-color:#913b55;margin:3px auto 0;height:8px;width:180px}#loading{font-size:14px;line-height:18px}@media (orientation:portrait){html.mobile.mobile-started #rotate{display:grid}}/* Controls use CSS pixels and the visible browser viewport, never Unity's render size. */
+#mobile-viewport{position:fixed;overflow:hidden;left:0;top:0;width:100%;height:100dvh;pointer-events:none;z-index:10;--key:clamp(46px,calc(var(--vh, 1vh) * 13),72px);--gap:8px}
+#touch-controls{display:none;position:absolute;inset:0;padding:0;pointer-events:none;--edge:14px}
+html.mobile.mobile-started #touch-controls.active{display:block}
+.pad{position:absolute;display:flex;gap:var(--gap);pointer-events:none;bottom:max(var(--edge),env(safe-area-inset-bottom))}
+.pad-left{left:max(var(--edge),env(safe-area-inset-left))}.pad-right{right:max(var(--edge),env(safe-area-inset-right))}
+.pad-top{top:max(12px,env(safe-area-inset-top));bottom:auto;left:50%;transform:translateX(-50%)}
+#joystick{position:absolute;left:max(20px,env(safe-area-inset-left));bottom:max(18px,env(safe-area-inset-bottom));width:clamp(108px,calc(var(--vh, 1vh) * 29),150px);height:clamp(108px,calc(var(--vh, 1vh) * 29),150px);border:2px solid #d6a1b965;border-radius:50%;background:#21132138;box-shadow:inset 0 0 20px #b16c8a20;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+#joystick::before{content:'↑';position:absolute;top:3px;left:46%;color:#efd3d47a;font:18px monospace}
+#stick{position:absolute;width:40%;height:40%;left:30%;top:30%;border:2px solid #ecc9d48c;box-sizing:border-box;border-radius:50%;background:#d0a3b34d;pointer-events:none}
+.pad-right .touch-key{width:clamp(70px,calc(var(--vh, 1vh) * 20),96px);height:clamp(70px,calc(var(--vh, 1vh) * 20),96px);border-radius:50%;background:#29101a9c}
+#take-cat{position:absolute;right:max(20px,env(safe-area-inset-right));bottom:calc(max(18px,env(safe-area-inset-bottom)) + 110px);display:none}
+#take-cat.available{display:block}
+.touch-key{box-sizing:border-box;width:var(--key);height:var(--key);padding:3px;border:2px solid #ab6072;border-radius:12px;background:rgba(29,12,23,.87);box-shadow:inset 0 0 0 2px #2e1d28,0 2px 5px #000;color:#ffe5d6;text-shadow:1px 2px #000;font:bold 11px monospace;touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;-webkit-tap-highlight-color:transparent}
+.touch-key span{display:block;font-size:23px;margin-bottom:2px}.touch-key.pressed{background:#873953;border-color:#ffdeb3}.pad-top .touch-key{width:62px;height:44px;font-size:11px}
+@media (orientation:portrait){html.mobile.mobile-started #touch-controls{display:none}}
+html.mobile canvas{inset:auto;image-rendering:pixelated;outline:none}
+@font-face{font-family:AlicePixel;src:url(Pixel.ttf)}
+#mobile-start{background:none;padding:0}#mobile-start button{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;box-shadow:none;cursor:pointer}
+#joystick{border:0;background:radial-gradient(circle,#38152338 48%,#10080f44 62%,transparent 64%),url(gothic-pad.svg) center/100% 100%;box-shadow:none}
+#joystick::before{content:''}
+#stick{border:2px solid #bf8192;background:radial-gradient(circle at 40% 30%,#a24f6699,#210c1bbb 72%);box-shadow:inset 0 0 0 3px #160b13,inset 0 0 0 5px #75404d,0 0 8px #0008}
+#stick::after{content:'✦';position:absolute;inset:0;display:grid;place-items:center;color:#dfb6ad;font-size:24px;text-shadow:1px 2px #000}
+.touch-key,.pad-right .touch-key{border:2px solid #a86a79;border-radius:3px;background:linear-gradient(#381623dd,#1c0d18e8);box-shadow:inset 0 0 0 3px #140a11,inset 0 0 0 5px #603041,0 0 0 2px #160911,0 4px 8px #0009;font-family:AlicePixel,monospace;color:#efd2c5;text-shadow:2px 2px #09060a;position:relative}
+.touch-key::before,.touch-key::after{content:'◆';position:absolute;color:#b87985;font:10px serif;top:-7px}.touch-key::before{left:-5px}.touch-key::after{right:-5px}
+.pad-right .touch-key{border-radius:12px 3px 12px 3px;font-size:12px}.touch-key.pressed{background:#742d46;box-shadow:inset 0 0 0 3px #240b17,0 0 14px #bc587588}
+.touch-key .attack-icon{height:32px;background:url(paper.png) center/contain no-repeat;image-rendering:pixelated}.touch-key .cat-icon{height:24px;background:url(cat.png) center/contain no-repeat;image-rendering:pixelated}
+.pad-top .touch-key{width:76px;height:40px;font-size:10px}
+.touch-key,.pad-right .touch-key{border:14px solid transparent;border-image:url(gothic-panel.png) 200 fill stretch;background:none;box-shadow:none;padding:0;box-sizing:border-box}.touch-key::before,.touch-key::after{content:none}.touch-key.pressed{filter:brightness(1.35);background:none;box-shadow:none}.pad-top .touch-key{width:86px;height:48px;border-width:10px;font-size:10px}.pad-right .touch-key{width:94px;height:94px;font-size:11px}
+
+.touch-key{display:flex;flex-direction:column;align-items:center;justify-content:center; text-shadow:-1px -1px 0 #000,0 -1px 0 #000,1px -1px 0 #000,-1px 0 0 #000,1px 0 0 #000,-1px 1px 0 #000,0 1px 0 #000,1px 1px 0 #000; -webkit-text-stroke:.35px #000;}
+/* Sculpted artwork shared with Unity; controls are anchored to viewport corners. */
+.touch-key,.pad-right .touch-key,.pad-top .touch-key{border:0;border-image:none;background:transparent url(ui_ring.png) center/100% 100% no-repeat;box-shadow:none;border-radius:0;padding:14px;image-rendering:pixelated}
+.touch-key::before,.touch-key::after{display:none}.touch-key.pressed{background:transparent url(ui_ring.png) center/100% 100% no-repeat;filter:brightness(1.4)}
+.pad-top{gap:12px;top:max(8px,env(safe-area-inset-top))}.pad-top .touch-key{width:clamp(64px,calc(var(--vh, 1vh) * 16),86px);height:clamp(64px,calc(var(--vh, 1vh) * 16),86px);font-size:9px;padding:10px}
+.touch-key span.inventory-icon{width:100%;height:34px;background:url(ui_inventory.png) center/contain no-repeat}.touch-key span.pause-icon{width:100%;height:34px;background:url(ui_pause.png) center/contain no-repeat}
+.pad-right .touch-key{width:clamp(96px,calc(var(--vh, 1vh) * 27),140px);height:clamp(96px,calc(var(--vh, 1vh) * 27),140px);font-size:12px}.touch-key .attack-icon{width:100%;height:48%;background:url(ui_attack.png) center/contain no-repeat;margin:6px 0 2px}
+#joystick{background:transparent url(ui_ring.png) center/100% 100% no-repeat;opacity:.72;width:clamp(118px,calc(var(--vh, 1vh) * 32),168px);height:clamp(118px,calc(var(--vh, 1vh) * 32),168px)}
+#stick{border:0;background:transparent url(ui_ring.png) center/100% 100% no-repeat;box-shadow:none;width:43%;height:43%;left:28.5%;top:28.5%}#stick::after{color:#f7d6d2;font-size:18px}
+#take-cat{position:absolute;width:85px;height:85px;bottom:calc(max(18px,env(safe-area-inset-bottom)) + 145px);font-size:9px;padding:12px}
+/* Control geometry is in visible-screen pixels, not vh or render-buffer pixels. */
+#mobile-viewport{transform-origin:0 0;touch-action:none;overscroll-behavior:none}
+.pad-top{gap:10px;top:max(8px,env(safe-area-inset-top));align-items:center}
+.pad-top .touch-key{width:var(--top-key,76px);height:var(--top-key,76px);min-width:0;max-width:none;min-height:0;max-height:none;padding:0;flex:0 0 auto}
+.pad-top .touch-key span.inventory-icon,.pad-top .touch-key span.pause-icon{position:absolute;left:50%;top:50%;margin:0;flex:none;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
+/* Align the alpha bounds, not the asymmetric transparent PNG canvas. */
+.pad-top .touch-key span.inventory-icon{width:68%;height:45.421875%;transform:translate(-41.9921875%,-54.678363%)}
+.pad-top .touch-key span.pause-icon{width:88%;height:58.78125%;transform:translate(-56.0546875%,-47.076023%)}
+#joystick{width:var(--stick-size,140px);height:var(--stick-size,140px)}
+.pad-right .touch-key{width:var(--attack-size,112px);height:var(--attack-size,112px)}
+</style></head><body><canvas id="game" tabindex="0"></canvas><div id="loading">Загрузка сна…<progress id="progress" max="1" value="0"></progress></div><div id="mobile-start"><button id="mobile-start-button" aria-label="Войти в сон"></button></div><div id="rotate">Поверните телефон горизонтально</div><div id="mobile-viewport"><div id="touch-controls" aria-label="Управление игрой">
+<div id="joystick" role="group" aria-label="Джойстик: влево и вправо — движение, вверх — прыжок, вниз — присед"><div id="stick"></div></div>
+<div class="pad pad-right"><button class="touch-key" data-key="4"><span class="attack-icon"></span>АТАКА</button></div>
+<button id="take-cat" class="touch-key" data-key="5" aria-label="Взять котёнка РА"><span class="cat-icon"></span>ВЗЯТЬ РА</button>
+<div class="pad pad-top"><button class="touch-key" data-action="inventory" aria-label="Инвентарь"><span class="inventory-icon"></span></button><button class="touch-key" data-action="pause" aria-label="Пауза"><span class="pause-icon"></span></button></div>
+</div></div><script>
+const ua=navigator.userAgent||'';const isMobileDevice=new URLSearchParams(location.search).get('touch')==='1'||!!(navigator.userAgentData&&navigator.userAgentData.mobile)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||/Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(ua);document.documentElement.classList.toggle('mobile',isMobileDevice);
+function enterMobileFullscreen(){if(!isMobileDevice)return;const root=document.documentElement;const request=root.requestFullscreen||root.webkitRequestFullscreen;try{const result=request&&!document.fullscreenElement?request.call(root,{navigationUI:'hide'}):null;if(result&&result.then)result.then(()=>{try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}});}catch(e){}document.documentElement.classList.add('mobile-started');if(instance)instance.SendMessage('AliceGame','BrowserStart');setTimeout(()=>window.scrollTo(0,1),80);}
+document.getElementById('mobile-start-button').addEventListener('click',enterMobileFullscreen);
+let instance;const canvas=document.getElementById('game');
+const viewport=document.getElementById('mobile-viewport');
+const renderPixelRatio=Math.min(window.devicePixelRatio||1,2);
+window.aliceViewportDiagnostics=[];
+function sizeMobileViewport(){
+ const v=isMobileDevice?window.visualViewport:null,w=Math.max(1,Math.round(v?v.width:window.innerWidth)),h=Math.max(1,Math.round(v?v.height:window.innerHeight)),x=v?v.offsetLeft:0,y=v?v.offsetTop:0;
+ // visualViewport.scale can change independently of devicePixelRatio (browser zoom).
+ const zoom=isMobileDevice&&v?Math.max(.1,v.scale||1):1;
+ const visibleWidth=w*zoom,visibleHeight=h*zoom;
+ Object.assign(viewport.style,{left:x+'px',top:y+'px',width:visibleWidth+'px',height:visibleHeight+'px',transform:'scale('+(1/zoom)+')'});
+ const compact=visibleWidth<600;
+ viewport.style.setProperty('--stick-size',(compact?118:140)+'px');
+ viewport.style.setProperty('--attack-size',(compact?96:112)+'px');
+ viewport.style.setProperty('--vh',(h/100)+'px');
+ viewport.style.setProperty('--top-key',(compact?64:76)+'px');
+ viewport.style.setProperty('--key',Math.max(44,Math.min(72,h*.16,(w-100)/6-8))+'px');
+ // Unity renders the full viewport with a uniform world scale; no CSS letterbox.
+ const cw=w,ch=h;
+ const dpr=renderPixelRatio;
+ const rw=Math.round(w*dpr),rh=Math.round(h*dpr);
+ // Unity owns the drawing buffer; CSS owns only the visible page rectangle.
+ window.aliceViewportDiagnostics.push({time:Date.now(),w,h,zoom,dpr,renderWidth:rw,renderHeight:rh});
+ if(window.aliceViewportDiagnostics.length>120)window.aliceViewportDiagnostics.shift();
+ Object.assign(canvas.style,{position:'fixed',left:(x+(w-cw)/2)+'px',top:(y+(h-ch)/2)+'px',width:cw+'px',height:ch+'px'});
+}
+window.addEventListener('resize',sizeMobileViewport);document.addEventListener('fullscreenchange',sizeMobileViewport);
+window.addEventListener('orientationchange',()=>{sizeMobileViewport();setTimeout(sizeMobileViewport,300);});
+if(window.visualViewport){visualViewport.addEventListener('resize',sizeMobileViewport);visualViewport.addEventListener('scroll',sizeMobileViewport);}sizeMobileViewport();
+const pointers=new Map();
+function sendButtons(){let mask=0;for(const key of pointers.values())mask|=1<<key;if(instance)instance.SendMessage('AliceGame','BrowserControls',String(mask));document.querySelectorAll('[data-key]').forEach(b=>b.classList.toggle('pressed',!!(mask&(1<<Number(b.dataset.key)))));}
+const joystick=document.getElementById('joystick'),stick=document.getElementById('stick');
+let stickPointer=null;
+function sendStick(x,y){if(instance)instance.SendMessage('AliceGame','BrowserJoystick',x.toFixed(3)+','+y.toFixed(3));}
+function resetStick(){stickPointer=null;stick.style.transform='translate(0px,0px)';sendStick(0,0);}
+function updateStick(e){const r=joystick.getBoundingClientRect(),radius=r.width*.34;let x=(e.clientX-r.left-r.width/2)/radius,y=(r.top+r.height/2-e.clientY)/radius;const length=Math.hypot(x,y);if(length>1){x/=length;y/=length;}stick.style.transform=`translate(${x*radius}px,${-y*radius}px)`;sendStick(x,y);}
+joystick.addEventListener('pointerdown',e=>{e.preventDefault();if(stickPointer!==null)return;stickPointer=e.pointerId;joystick.setPointerCapture(e.pointerId);updateStick(e);});
+joystick.addEventListener('pointermove',e=>{if(e.pointerId===stickPointer){e.preventDefault();updateStick(e);}});
+['pointerup','pointercancel','lostpointercapture'].forEach(type=>joystick.addEventListener(type,e=>{if(e.pointerId===stickPointer)resetStick();}));
+function releaseButtons(){pointers.clear();sendButtons();resetStick();}
+window.aliceTouchState=(playing,cat)=>{const controls=document.getElementById('touch-controls');if(!playing&&controls.classList.contains('active'))releaseButtons();controls.classList.toggle('active',!!playing);document.getElementById('take-cat').classList.toggle('available',!!cat);};
+window.addEventListener('orientationchange',releaseButtons);
+document.querySelectorAll('[data-key]').forEach(b=>{
+ b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);pointers.set(e.pointerId,Number(b.dataset.key));sendButtons();});
+ const release=e=>{pointers.delete(e.pointerId);sendButtons();};
+ b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
+});
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{releaseButtons();if(instance)instance.SendMessage('AliceGame','BrowserAction',b.dataset.action);}));
+// Safari's native pinch can otherwise zoom the page when two fingers operate
+// different controls. Prevent browser gestures, keeping Pointer Events intact.
+for(const name of ['gesturestart','gesturechange','gestureend'])document.addEventListener(name,e=>{if(isMobileDevice)e.preventDefault();},{passive:false});
+for(const name of ['touchstart','touchmove'])document.addEventListener(name,e=>{if(isMobileDevice&&e.touches&&e.touches.length>1)e.preventDefault();},{passive:false});
+window.addEventListener('blur',releaseButtons);document.addEventListener('visibilitychange',releaseButtons);
+function pause(){if(instance)instance.SendMessage('AliceGame','PlatformPause');}
+function resume(){if(instance)instance.SendMessage('AliceGame','PlatformResume');}
+document.addEventListener('visibilitychange',()=>document.hidden?pause():resume());
+window.addEventListener('blur',pause);window.addEventListener('focus',resume);
+window.addEventListener('keydown',e=>{if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+const sdk=document.createElement('script');sdk.src='/sdk.js';sdk.onload=()=>{if(!window.YaGames)return;YaGames.init().then(s=>{window.ysdk=s;s.on('game_api_pause',pause);s.on('game_api_resume',resume);if(window.aliceReady)s.features.LoadingAPI.ready();if(window.alicePlaying)s.features.GameplayAPI.start();}).catch(()=>{});};if(location.hostname.endsWith('yandex.net')||location.hostname.endsWith('yandex.ru'))document.head.appendChild(sdk);
+const loader=document.createElement('script');loader.src='Build/{{{ LOADER_FILENAME }}}?v=1.7.4';loader.onload=()=>createUnityInstance(canvas,{matchWebGLToCanvasSize:true,devicePixelRatio:renderPixelRatio,dataUrl:'Build/{{{ DATA_FILENAME }}}?v=1.7.4',frameworkUrl:'Build/{{{ FRAMEWORK_FILENAME }}}?v=1.7.4',codeUrl:'Build/{{{ CODE_FILENAME }}}?v=1.7.4',streamingAssetsUrl:'StreamingAssets',companyName:'Zlatoslava',productName:'Alice in Schizoforest',productVersion:'1.7.4'},v=>document.getElementById('progress').value=v).then(u=>{instance=u;sizeMobileViewport();if(isMobileDevice&&document.documentElement.classList.contains('mobile-started'))instance.SendMessage('AliceGame','BrowserStart');document.getElementById('loading').remove();canvas.focus();}).catch(e=>{document.getElementById('loading').textContent='Не удалось загрузить сон. Обновите страницу.';console.error(e);});document.body.appendChild(loader);
+</script></body></html>
+
+
+
+

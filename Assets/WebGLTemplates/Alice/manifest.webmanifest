@@ -1,0 +1,16 @@
+{
+  "name": "Алиса в шизолесье",
+  "short_name": "Шизолесье",
+  "description": "Готическая пиксельная платформенная игра",
+  "start_url": "/?mode=fullscreen",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#09060a",
+  "theme_color": "#160f18",
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
