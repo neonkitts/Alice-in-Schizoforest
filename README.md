@@ -2,7 +2,7 @@
 
 **Готический пиксельный платформер о путешествии по собственному сну.** Алиса идёт через лес, замок и подземелье к дереву-дому, чтобы проснуться.
 
-[🎮 Играть в браузере](https://alice-in-schizoforest.vercel.app/) · [⬇️ Скачать для Windows](https://github.com/neonkitts/Alice-in-Schizoforest/releases/tag/v1.7.4) · [📖 Игровой дизайн](docs/GAME_DESIGN_RU.md)
+[🎮 Играть в браузере](https://alice-in-schizoforest.vercel.app/) · [⬇️ Скачать Windows ZIP](https://github.com/neonkitts/Alice-in-Schizoforest/releases/download/v1.7.4/AliceInSchizoforest-Windows.zip) · [📂 Исходники Unity](Assets) · [📖 Игровой дизайн](docs/GAME_DESIGN_RU.md)
 
 ![Алиса в лесу](Portfolio/gameplay.png)
 
